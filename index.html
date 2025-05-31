@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assistente de Saúde Mental</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <header>
+      <div>
+        <img src="/Trabalho-Enfermagem/img/aluma.png" alt="Logo da Aluma" class="logo">
+      </div>
+      <div>
+        <h1>Assistente de Saúde Mental</h1>
+        <p>Estou aqui para ouvir você.</p>
+      </div>
+    </header>
+
+    <div class="chat-window" id="chat-window">
+      <!-- As mensagens vão aparecer aqui -->
+      <div class="message bot">
+        Olá! Eu sou seu assistente de saúde mental. Como você está se sentindo hoje?
+      </div>
+    </div>
+
+    <form id="chat-form">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Escreva sua mensagem..."
+        autocomplete="off"
+        required
+      />
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
+    const chatWindow = document.getElementById('chat-window');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const userMessage = input.value.trim();
+        if (!userMessage) return;
+
+        appendMessage('user', userMessage);
+        input.value = '';
+
+        // Adiciona "digitando..."
+        const typing = document.createElement('div');
+        typing.classList.add('typing');
+        typing.id = 'typing';
+        typing.textContent = 'Assistente está digitando...';
+        chatWindow.appendChild(typing);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        setTimeout(() => {
+        document.getElementById('typing')?.remove();
+        const botResponse = generateResponse(userMessage);
+        appendMessage('bot', botResponse);
+        }, 1000);
+    });
+
+    function appendMessage(sender, text) {
+        const msg = document.createElement('div');
+        msg.classList.add('message', sender);
+
+        const avatar = document.createElement('div');
+        avatar.classList.add('avatar');
+        avatar.classList.add(sender === 'user' ? 'user-avatar' : 'bot-avatar');
+        avatar.textContent = sender === 'user' ? '👤' : '🤖';
+
+        const messageText = document.createElement('div');
+        messageText.classList.add('text');
+        messageText.textContent = text;
+
+        msg.appendChild(avatar);
+        msg.appendChild(messageText);
+        chatWindow.appendChild(msg);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function generateResponse(message) {
+        // Simulação básica
+        return "Entendo. Quer me contar mais sobre isso?";
+    }
+</script>
+
+</body>
+</html>
